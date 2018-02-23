@@ -68,11 +68,7 @@ let () =
     cp src dst in
   dispatch begin function
     | After_rules ->
-        let camlp4of =
-          try
-            let path_bin = Filename.concat (Sys.getenv "PATH_OCAML_PREFIX") "bin" in
-            Filename.concat path_bin "camlp4of"
-          with _ -> "camlp4of" in
+        let camlp4of = "camlp4of" in
         flag ["ocaml"; "compile"; "pp_camlp4of"] (S[A"-pp"; A camlp4of]);
         flag ["ocaml"; "pp:dep"; "pp_camlp4of"] (S[A camlp4of]);
         flag ["ocaml"; "compile"; "use_compiler_libs"] (S[A"-I"; A"+compiler-libs"]);

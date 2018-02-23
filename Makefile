@@ -31,7 +31,7 @@ PATH_INSTALL=$(PATH_OCAML_PREFIX)/lib/ocaml/bisect
 # DEFINITIONS
 
 PROJECT_NAME=bisect
-OCAMLBUILD=$(PATH_OCAML_PREFIX)/bin/ocamlbuild
+OCAMLBUILD=ocamlbuild
 OCAMLBUILD_ENV=WARNINGS=$(WARNINGS) PATH_OCAML_PREFIX=$(PATH_OCAML_PREFIX)
 OCAMLBUILD_FLAGS=-classic-display -no-links
 MODULES_ODOCL=$(PROJECT_NAME).odocl
@@ -84,7 +84,7 @@ install: FORCE
 	if [ "$(PPX)" = "TRUE" ]; then \
 	  cp $(PATH_BUILD)/src/syntax/bisect_ppx.byte $(PATH_OCAML_PREFIX)/bin; \
 	fi; \
-	(test -x $(PATH_OCAML_PREFIX)/bin/ocamlopt && cp $(PATH_BUILD)/src/report/report.native $(PATH_OCAML_PREFIX)/bin/bisect-report.opt || true); \
+	(which ocamlopt && cp $(PATH_BUILD)/src/report/report.native $(PATH_OCAML_PREFIX)/bin/bisect-report.opt || true); \
 	if [ -x "$(PATH_OCAMLFIND)" ]; then \
 	  $(PATH_OCAMLFIND) query $(PROJECT_NAME) && $(PATH_OCAMLFIND) remove $(PROJECT_NAME) || true; \
 	  $(PATH_OCAMLFIND) install $(PROJECT_NAME) META -optional \
@@ -115,7 +115,7 @@ install: FORCE
 
 generate: FORCE
 	echo '$(PROJECT_NAME).cma' > $(PROJECT_NAME).itarget
-	(test -x $(PATH_OCAML_PREFIX)/bin/ocamlopt && echo '$(PROJECT_NAME).cmxa' >> $(PROJECT_NAME).itarget) || true
-	(test -x $(PATH_OCAML_PREFIX)/bin/ocamljava && echo '$(PROJECT_NAME).cmja' >> $(PROJECT_NAME).itarget) || true
+	(which ocamlopt && echo '$(PROJECT_NAME).cmxa' >> $(PROJECT_NAME).itarget) || true
+	(which ocamljava && echo '$(PROJECT_NAME).cmja' >> $(PROJECT_NAME).itarget) || true
 
 FORCE:
