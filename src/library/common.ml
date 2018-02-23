@@ -159,8 +159,7 @@ let write_channel channel magic write_digest x =
 
 let check_channel channel filename magic check_digest =
   let magic_length = String.length magic in
-  let file_magic = String.create magic_length in
-  really_input channel file_magic 0 magic_length;
+  let file_magic = really_input_string channel magic_length in
   let file_version =
     if file_magic = magic then
       let file_version : (int * int) = input_value channel in
