@@ -36,12 +36,16 @@ all: clean
 
 one: FORCE
 	@if [ -z $(NAME) ]; then echo "*** value for 'NAME' is missing"; exit 1; fi
-	@echo "Running tests for '$(NAME)'..." | tee -a _log
-	@(cd $(NAME) && \
-	  $(MAKE) PATH_OCAML_BIN=$(PATH_OCAML_PREFIX)/bin \
-	  COMPILER=ocamlc EXECUTABLE=bytecode RUN=./ LIB_EXT=cma EXE_SUFFIX='' \
-	  REPORT=../../_build/src/report/report.byte && \
-	cd ..) || echo '*** error' >> _log
+	@if [[ $(NAME) =~ ppx.* && $(PPX) == "FALSE" ]]; then \
+	  echo "PPX test $(NAME) skipped" | tee -a _log; \
+	else \
+	  echo "Running tests for '$(NAME)'..." | tee -a _log; \
+          (cd $(NAME) && \
+	    $(MAKE) PATH_OCAML_BIN=$(PATH_OCAML_PREFIX)/bin \
+	    COMPILER=ocamlc EXECUTABLE=bytecode RUN=./ LIB_EXT=cma EXE_SUFFIX='' \
+	    REPORT=../../_build/src/report/report.byte && \
+	  cd ..) || echo '*** error' >> _log; \
+	fi
 
 clean: FORCE
 	@rm -f _log
