@@ -27,9 +27,11 @@ true: -traverse
 "src/syntax/ast_mapper.ml": use_compiler_libs
 "src/syntax/instrumentPpx.ml": use_compiler_libs
 "src/syntax/commentsCamlp4.ml": use_camlp4
+<src/syntax/*.ml{,i,y}>: use_str
 <src/syntax/bisect_ppx.{byte,native,jar}>: use_str, use_compiler_libs
 "src/threads/bisectThread.ml": thread
 <src/report/report.{byte,native,jar}>: use_str
+"src/report/combine.ml": use_str
 <src/**/*.ml{,i}>: warnings
 
 # Generation of version file
